@@ -1,0 +1,15 @@
+Jenkinsfile (Declarative Pipeline)
+/* Requires the Docker Pipeline plugin */
+pipeline {
+    agent any
+    tools {
+        gradle "GRADLE_latest"
+    }
+    stages {
+        stage('build') {
+            steps {
+                sh './gradlew -v'
+            }
+        }
+    }
+}

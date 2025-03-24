@@ -10,6 +10,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+## User Files
+sampleJenkins.txt
+
 ### STS ###
 .attach_pid*
 .apt_generated

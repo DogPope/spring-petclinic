@@ -18,8 +18,8 @@ group = 'org.springframework.samples'
 version = '3.4.0'
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_17
-}
+  sourceCompatibility = JavaVersion.VERSION_21 // Changed to version 21. Maybe saves some trouble later with dependency conflicts?
+} // May have to change it back at some stage, but made a note of it anyway.
 
 repositories {
   mavenCentral()
@@ -35,6 +35,8 @@ dependencies {
   // Workaround for AOT issue (https://github.com/spring-projects/spring-framework/pull/33949) -->
   implementation 'io.projectreactor:reactor-core'
 
+  implementation(platform("software.amazon.awssdk:bom:2.27.21")) // Two lines added for AWS dependencies.
+  implementation("software.amazon.awssdk:s3") // This one too.
   implementation 'org.springframework.boot:spring-boot-starter-cache'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -73,6 +75,18 @@ checkstyleNohttp {
   configDirectory = project.file('src/checkstyle')
   configFile = file('src/checkstyle/nohttp-checkstyle.xml')
 }
+
+// jar {
+//   manifest{
+//     attributes(
+//       'main-class':'com.package.PetClinicApplication.java'
+//       // 'org.springframework.samples.petclinic' sub this in if it doesn't work.
+//     )
+//   }
+//   from{
+//     configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+//   }
+// }
 
 tasks.named("formatMain").configure { dependsOn("checkstyleMain") }
 tasks.named("formatMain").configure { dependsOn("checkstyleNohttp") }
