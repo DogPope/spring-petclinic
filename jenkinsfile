@@ -1,13 +1,10 @@
-Jenkinsfile (Declarative Pipeline)
-/* Requires the Docker Pipeline plugin */
-node {
-    stage('build'){
-        ./gradlew build
-    }
-    stage('test'){
-        ./gradlew test
-    }
-    stage('deploy'){
-        echo "Hello Deployment."
+pipeline {
+    agent { docker { image 'bitnami/gradle' } }
+    stages {
+        stage('build') {
+            steps {
+                sh 'mvn --version'
+            }
+        }
     }
 }
