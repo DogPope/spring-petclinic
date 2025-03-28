@@ -1,9 +1,19 @@
 pipeline {
     agent { docker { image 'bitnami/gradle' } }
     stages {
-        stage('build') {
+        stage('Build') {
             steps {
-                sh 'mvn --version'
+                echo 'Building'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh './gradlew build'
             }
         }
     }
