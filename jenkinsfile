@@ -1,15 +1,13 @@
 Jenkinsfile (Declarative Pipeline)
 /* Requires the Docker Pipeline plugin */
-pipeline {
-    agent any
-    tools {
-        gradle "GRADLE_latest"
+node {
+    stage('build'){
+        ./gradlew build
     }
-    stages {
-        stage('build') {
-            steps {
-                sh './gradlew -v'
-            }
-        }
+    stage('test'){
+        ./gradlew test
+    }
+    stage('deploy'){
+        echo "Hello Deployment."
     }
 }

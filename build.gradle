@@ -18,7 +18,8 @@ group = 'org.springframework.samples'
 version = '3.4.0'
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_21 // Changed to version 21. Maybe saves some trouble later with dependency conflicts?
+  sourceCompatibility = JavaVersion.VERSION_17 // Changed to version 21. Maybe saves some trouble later with dependency conflicts?
+  // Note: Changed again later back to 17 because of Docker.
 } // May have to change it back at some stage, but made a note of it anyway.
 
 repositories {
