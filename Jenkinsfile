@@ -1,14 +1,14 @@
 pipeline {
-    agent any
+    agent docker{}
     stages {
         stage('Build') {
             steps {
-                echo "build"
+                bat './gradlew build'
             }
         }
         stage('Test') {
             steps {
-                echo 'build'
+                bat './gradlew test'
             }
         }
         stage('Deploy') {
