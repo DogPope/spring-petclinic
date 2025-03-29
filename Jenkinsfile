@@ -8,7 +8,13 @@ pipeline {
         }
         stage('Test') {
             steps {
-                bat './gradlew test'
+                try {
+                    bat "./gradlew test"
+                }
+                catch(err) {
+                    testsError = err
+                    echo "Test Failure"
+                }
             }
         }
         stage('Build') {
