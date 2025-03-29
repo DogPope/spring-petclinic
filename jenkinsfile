@@ -1,19 +1,25 @@
 pipeline {
     agent { docker { image 'bitnami/gradle' } }
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', credentialsId: 'credential-id', url: 'https://github.com/DogPope/spring-petclinic.git'
+            }
+        }
         stage('Build') {
             steps {
-                echo 'Building'
+                sh './gradlew build'
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing'
+                sh './gradlew test'
             }
         }
         stage('Deploy') {
             steps {
-                sh './gradlew build'
+                echo "Deploy Still has to be done."
+                // Deployment Goes here.
             }
         }
     }
