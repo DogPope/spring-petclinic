@@ -1,20 +1,14 @@
 pipeline {
     agent any
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
+            }
+        }
         stage('Clean') {
             steps {
                 bat './gradlew clean'
-            }
-        }
-        stage('Test') {
-            steps {
-                try {
-                    bat "./gradlew test"
-                }
-                catch(err) {
-                    testsError = err
-                    echo "Test Failure"
-                }
             }
         }
         stage('Build') {

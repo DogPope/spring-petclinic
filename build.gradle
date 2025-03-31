@@ -6,6 +6,7 @@ plugins {
   id 'org.cyclonedx.bom' version '1.10.0'
   id 'io.spring.javaformat' version '0.0.43'
   id "io.spring.nohttp" version "0.0.11"
+  id "org.sonarqube" version "4.0.0.2929"
 }
 
 apply plugin: 'java'
@@ -18,9 +19,8 @@ group = 'org.springframework.samples'
 version = '3.4.0'
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_17 // Changed to version 21. Maybe saves some trouble later with dependency conflicts?
-  // Note: Changed again later back to 17 because of Docker.
-} // May have to change it back at some stage, but made a note of it anyway.
+  sourceCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
   mavenCentral()
@@ -76,18 +76,6 @@ checkstyleNohttp {
   configDirectory = project.file('src/checkstyle')
   configFile = file('src/checkstyle/nohttp-checkstyle.xml')
 }
-
-// jar {
-//   manifest{
-//     attributes(
-//       'main-class':'com.package.PetClinicApplication.java'
-//       // 'org.springframework.samples.petclinic' sub this in if it doesn't work.
-//     )
-//   }
-//   from{
-//     configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-//   }
-// }
 
 tasks.named("formatMain").configure { dependsOn("checkstyleMain") }
 tasks.named("formatMain").configure { dependsOn("checkstyleNohttp") }
