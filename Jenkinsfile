@@ -16,9 +16,9 @@ pipeline {
                 bat './gradlew build'
             }
         }
-        stage('Deploy') {
+        stage('Test') {
             steps {
-                echo "Deploy Still has to be done."
+                bat './gradlew test'
                 // Deployment Goes here.
             }
         }
