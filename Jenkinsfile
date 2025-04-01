@@ -41,8 +41,7 @@ pipeline {
                     withCredentials([file(credentialsId: 'gcloud-creds', variable: 'gcloud_creds')]) {
                         powershell '''
                             gcloud container clusters get-credentials ${env:GKE_CLUSTER} --zone ${env:GKE_ZONE} --project ${env:PROJECT_ID}
-                            kubectl set image deployment/${env:DEPLOYMENT_NAME} ${env:DEPLOYMENT_NAME}=${env:FULL_IMAGE_PATH} --record
-                            kubectl rollout status deployment/${env:DEPLOYMENT_NAME}
+                            gcloud container deployments update ${env:DEPLOYMENT_NAME} --container=${env:DEPLOYMENT_NAME} --image=${env:FULL_IMAGE_PATH}
                         '''
                     }
                 }
