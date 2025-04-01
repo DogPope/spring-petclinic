@@ -4,6 +4,22 @@ pipeline {
         CLOUDSDK_CORE_PROJECT = "spring-petclinic-455216" // Gets called Automatically by Jenkins?
     }
     stages {
+        stage('Gcloud Activation') {
+            steps {
+                withCredentials([file(credentialsId: 'gcloudcredentials', variable: 'gcloudcredentials')]) {
+                    bat '''
+                        echo "Running gcloud version..."
+                        gcloud version || echo "Failed to execute 'gcloud version'"
+                        
+                        echo "Authenticating with gcloud credentials..."
+                        gcloud auth activate-service-account --key-file="%gcloudcredentials%" || echo "Failed to authenticate with gcloud credentials"
+                        
+                        echo "Listing compute zones..."
+                        gcloud compute zones list || echo "Failed to list compute zones"
+                    '''
+                }
+            }
+        }
         // stage('Checkout') {
         //     steps {
         //         git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
@@ -12,17 +28,6 @@ pipeline {
         stage('Clean') {
             steps {
                 bat './gradlew clean'
-            }
-        }
-        stage('Gcloud Activation') {
-            steps {
-                withCredentials([file(credentialsId: 'gcloudcredentials', variable:'gcloudcredentials')]){
-                    bat '''
-                        gcloud version
-                        gcloud auth activate-service-account --key-file="%gcloudcredentials%" || echo "Failed to authenticate with gcloud credentials"
-                        gcloud compute zones list
-                    '''
-                }
             }
         }
         // stage('Scan') {
