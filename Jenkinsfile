@@ -12,7 +12,7 @@ pipeline {
                         gcloud version || echo "Failed to execute 'gcloud version'"
                         
                         echo "Authenticating with gcloud credentials..."
-                        gcloud auth activate-service-account --key-file="C:\\Users\\Daniel Jameson\\Downloads\\spring-petclinic-455216-56d70a4e1ff6.json
+                        gcloud auth activate-service-account --key-file="C:\\Users\\Daniel Jameson\\Downloads\\spring-petclinic-455216-56d70a4e1ff6.json"
                         
                         echo "Listing compute zones..."
                         gcloud compute zones list || echo "Failed to list compute zones"
