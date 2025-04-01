@@ -19,7 +19,7 @@ pipeline {
                 withCredentials([file(credentialsId: 'gcloudcredentials', variable:'gcloudcredentials')]){
                     bat '''
                         gcloud version
-                        gcloud auth activate-service-account --key-file='%gcloudcredentials%'
+                        gcloud auth activate-service-account --key-file="%gcloudcredentials%" || echo "Failed to authenticate with gcloud credentials"
                         gcloud compute zones list
                     '''
                 }
