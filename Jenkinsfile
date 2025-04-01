@@ -41,8 +41,8 @@ pipeline {
                     withCredentials([file(credentialsId: 'gcloud-creds', variable: 'gcloud_creds')]) {
                         powershell '''
                             gcloud container clusters get-credentials ${env:GKE_CLUSTER} --zone ${env:GKE_ZONE} --project ${env:PROJECT_ID}
-                            kubectl create deployment petclinic --image=${GKE_ZONE}-docker.pkg.dev/${env:PROJECT_ID}/petclinic/petclinic:v1
-                            kubectl scale deployment petclinic --replicas=1
+                            kubectl create deployment ${env:GKE_CLUSTER} --image=${GKE_ZONE}-docker.pkg.dev/${env:PROJECT_ID}/petclinic/petclinic:v1
+                            kubectl scale deployment ${env:GKE_CLUSTER} --replicas=1
                         '''
                     }
                 }
