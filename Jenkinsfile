@@ -6,19 +6,15 @@ pipeline {
     stages {
         stage('Gcloud Activation') {
             steps {
-                withCredentials([file(credentialsId: 'gcloudcredentials', variable: 'gcloudcredentials')]) {
-                    bat '''
-                        echo %gcloudcredentials%
+                withCredentials([file(credentialsId: 'gcloud-creds', variable: 'gcloud_creds')]) {
+                    sh '''                        
                         gcloud version
+                        gcloud auth activate-service-account --key-file="${gcloud_creds}"
+                        gcloud compute zones list
                     '''
                 }
             }
         }
-        // stage('Checkout') {
-        //     steps {
-        //         git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
-        //     }
-        // }
         stage('Clean') {
             steps {
                 bat './gradlew clean'
