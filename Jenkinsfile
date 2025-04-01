@@ -5,21 +5,28 @@ pipeline {
     }
     stages {
         stage('Gcloud Activation') {
-            steps {
-                withCredentials([file(credentialsId: 'gcloudcredentials', variable: 'gcloudcredentials')]) {
-                    bat '''
-                        echo "Running gcloud version..."
-                        gcloud version || echo "Failed to execute 'gcloud version'"
-                        
-                        echo "Authenticating with gcloud credentials..."
-                        gcloud auth activate-service-account --key-file="C:\\Users\\Daniel Jameson\\Downloads\\spring-petclinic-455216-56d70a4e1ff6.json"
-                        
-                        echo "Listing compute zones..."
-                        gcloud compute zones list || echo "Failed to list compute zones"
-                    '''
-                }
-            }
+    steps {
+        withCredentials([file(credentialsId: 'gcloudcredentials', variable: 'gcloudcredentials')]) {
+            bat '''
+                echo "Checking if credentials file is being loaded..."
+                if exist "%gcloudcredentials%" (
+                    echo "Credentials file found at: %gcloudcredentials%"
+                ) else (
+                    echo "Credentials file not found: %gcloudcredentials%"
+                )
+                
+                echo "Running gcloud version..."
+                gcloud version || echo "Failed to execute 'gcloud version'"
+                
+                echo "Authenticating with gcloud credentials..."
+                gcloud auth activate-service-account --key-file="%gcloudcredentials%" || echo "Failed to authenticate with gcloud credentials"
+                
+                echo "Listing compute zones..."
+                gcloud compute zones list || echo "Failed to list compute zones"
+            '''
         }
+    }
+}
         // stage('Checkout') {
         //     steps {
         //         git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
