@@ -8,22 +8,13 @@ pipeline {
     steps {
         withCredentials([file(credentialsId: 'gcloudcredentials', variable: 'gcloudcredentials')]) {
             bat '''
-                echo "CLOUDSDK_CORE_PROJECT is set to: ${env.CLOUDSDK_CORE_PROJECT}"
-                echo "Checking if credentials file is being loaded..."
-                if exist "%gcloudcredentials%" (
-                    echo "Credentials file found at: %gcloudcredentials%"
-                ) else (
-                    echo "Credentials file not found: %gcloudcredentials%"
-                )
+                echo @echo off > gcloud_setup.bat
+                echo set "PATH=C:\\Program Files\\Google\\Cloud SDK\\google-cloud-sdk\\bin;%PATH%" >> gcloud_setup.bat
+                echo gcloud version >> gcloud_setup.bat
+                echo gcloud auth activate-service-account --key-file="%gcloudcredentials%" >> gcloud_setup.bat
+                echo gcloud compute zones list >> gcloud_setup.bat
                 
-                echo "Running gcloud version..."
-                gcloud version || echo "Failed to execute 'gcloud version'"
-                
-                echo "Authenticating with gcloud credentials..."
-                gcloud auth activate-service-account --key-file="%gcloudcredentials%" || echo "Failed to authenticate with gcloud credentials"
-                
-                echo "Listing compute zones..."
-                gcloud compute zones list || echo "Failed to list compute zones"
+                call gcloud_setup.bat
             '''
         }
     }
