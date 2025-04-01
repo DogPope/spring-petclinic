@@ -1,49 +1,51 @@
 pipeline {
     agent any
-    environment{
-        CLOUDSDK_CORE_PROJECT = "spring-petclinic-455216" // Gets called Automatically by Jenkins?
+    environment {
+        PROJECT_ID = "spring-petclinic-455216"
+        ARTIFACT_REGISTRY = "europe-west2-docker.pkg.dev"
+        REPOSITORY = "petclinic"
+        IMAGE_NAME = "petclinic"
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
+        FULL_IMAGE_PATH = "${ARTIFACT_REGISTRY}/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${IMAGE_TAG}"
+        GKE_CLUSTER = "petclinic-cluster"
+        GKE_ZONE = "europe-west2-a"
+        DEPLOYMENT_NAME = "petclinic-deployment"
     }
     stages {
-        stage('Gcloud Activation') {
+        stage('Gcloud Authentication') {
             steps {
                 withCredentials([file(credentialsId: 'gcloud-creds', variable: 'gcloud_creds')]) {
                     powershell '''
-                        gcloud version
                         gcloud auth activate-service-account --key-file="$env:gcloud_creds"
-                        gcloud compute zones list
+			            gcloud auth configure-docker ${env:ARTIFACT_REGISTRY}
                     '''
                 }
             }
         }
-        stage('Clean') {
-            steps {
-                bat './gradlew clean'
+	stage('Build Container Image') {
+	    steps {
+	    	powershell '''
+		        docker build -t ${env:FULL_IMAGE_PATH} .
+		    '''
+   	    }
+	}
+	stage('Push to Artifact Registry') {
+	    steps {
+	    	powershell '''
+		        docker build -t ${env:FULL_IMAGE_PATH} .
+		    '''
+   	    }
+	}
+	stage('Deploy to Google Kubernetes Engine') {
+	    steps {
+                withCredentials([file(credentialsId: 'gcloud-creds', variable: 'gcloud_creds')]) {
+                    powershell '''
+			            gcloud container clusters get-credentials ${env:GKE_CLUSTER} --zone ${env:GKE_ZONE} --project ${env:PROJECT_ID}
+			            kubectl set image deployment/${env:DEPLOYMENT_NAME} ${env:DEPLOYMENT_NAME}=${env:FULL_IMAGE_PATH} --record
+			            kubectl rollout status deployment/${env:DEPLOYMENT_NAME}
+                    '''
+                }
             }
-        }
-        // stage('Scan') {
-        //     steps {
-        //         withSonarQubeEnv('SonarQube') {
-        //             bat '''
-        //             docker run --rm -v "%CD%":/app -w /app maven:3.8.7 mvn sonar:sonar \
-        //                 -Dsonar.projectKey=spring-petclinic \
-        //                 -Dsonar.host.url=http://192.168.130.132:9000 \
-        //                 -Dsonar.login=sqa_05c9624bf6a7e7680fdae2793fb56b1cd95c4e55 \
-        //                 -Dsonar.java.binaries=target/classes \
-        //                 -Dcheckstyle.skip=true
-        //             '''
-        //         }
-        //     }
-        // }
-        stage('Build') {
-            steps {
-                bat './gradlew build'
-            }
-        }
-        stage('Test') {
-            steps {
-                bat './gradlew test'
-                // Deployment Goes here.
-            }
-        }
+	}
     }
 }
