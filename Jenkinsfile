@@ -8,7 +8,7 @@ pipeline {
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         FULL_IMAGE_PATH = "${ARTIFACT_REGISTRY}/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${IMAGE_TAG}"
         GKE_CLUSTER = "petclinic-cluster"
-        GKE_ZONE = "europe-west2-a"
+        GKE_ZONE = "europe-west2"
         DEPLOYMENT_NAME = "petclinic-deployment"
     }
     stages {
