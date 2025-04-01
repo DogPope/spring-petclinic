@@ -11,6 +11,16 @@ pipeline {
                 bat './gradlew clean'
             }
         }
+        stage('Gcloud Activation') {
+            steps {
+                withCredentials([file(credentialsId: 'gcloudcredentials', variable:'GCLOUDCREDENTIALS')]){}
+                sh '''
+                    gcloud version
+                    gcloud auth activate-service-account --key-file='$GCLOUDCREDENTIALS'
+                    gcloud compute zones list
+                '''
+            }
+        }
         // stage('Scan') {
         //     steps {
         //         withSonarQubeEnv('SonarQube') {
