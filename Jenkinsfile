@@ -19,7 +19,7 @@ pipeline {
                         -Dsonar.projectKey=spring-petclinic \
                         -Dsonar.host.url=http://192.168.130.132:9000 \
                         -Dsonar.login=sqa_05c9624bf6a7e7680fdae2793fb56b1cd95c4e55 \
-                        -Dsonar.java.binaries=build/libs \
+                        -Dsonar.java.binaries=target/classes \
                         -Dcheckstyle.skip=true
                     '''
                 }
