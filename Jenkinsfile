@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment{
+        CLOUDSDK_CORE_PROJECT = "spring-petclinic-455216" // Gets called Automatically by Jenkins?
+    }
     stages {
         stage('Checkout') {
             steps {
