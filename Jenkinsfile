@@ -8,6 +8,7 @@ pipeline {
     steps {
         withCredentials([file(credentialsId: 'gcloudcredentials', variable: 'gcloudcredentials')]) {
             bat '''
+                echo "CLOUDSDK_CORE_PROJECT is set to: ${env.CLOUDSDK_CORE_PROJECT}"
                 echo "Checking if credentials file is being loaded..."
                 if exist "%gcloudcredentials%" (
                     echo "Credentials file found at: %gcloudcredentials%"
