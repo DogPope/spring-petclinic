@@ -16,10 +16,10 @@ pipeline {
         }
         stage('Gcloud Activation') {
             steps {
-                withCredentials([file(credentialsId: 'gcloudcredentials', variable:'GCLOUDCREDENTIALS')]){
+                withCredentials([file(credentialsId: 'gcloudcredentials', variable:'gcloudcredentials')]){
                     bat '''
                         gcloud version
-                        gcloud auth activate-service-account --key-file='$GCLOUDCREDENTIALS'
+                        gcloud auth activate-service-account --key-file='$gcloudcredentials'
                         gcloud compute zones list
                     '''
                 }
