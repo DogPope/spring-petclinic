@@ -5,20 +5,15 @@ pipeline {
     }
     stages {
         stage('Gcloud Activation') {
-    steps {
-        withCredentials([file(credentialsId: 'gcloudcredentials', variable: 'gcloudcredentials')]) {
-            bat '''
-                echo @echo off > gcloud_setup.bat
-                echo set "PATH=C:\\Program Files\\Google\\Cloud SDK\\google-cloud-sdk\\bin;%PATH%" >> gcloud_setup.bat
-                echo gcloud version >> gcloud_setup.bat
-                echo gcloud auth activate-service-account --key-file="%gcloudcredentials%" >> gcloud_setup.bat
-                echo gcloud compute zones list >> gcloud_setup.bat
-                
-                call gcloud_setup.bat
-            '''
+            steps {
+                withCredentials([file(credentialsId: 'gcloudcredentials', variable: 'gcloudcredentials')]) {
+                    bat '''
+                        echo %gcloudcredentials%
+                        gcloud version
+                    '''
+                }
+            }
         }
-    }
-}
         // stage('Checkout') {
         //     steps {
         //         git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
