@@ -22,30 +22,38 @@ pipeline {
                 }
             }
         }
-	stage('Build Container Image') {
-	    steps {
-	    	powershell '''
-		        docker build -t ${env:FULL_IMAGE_PATH} .
-		    '''
-   	    }
-	}
-	stage('Push to Artifact Registry') {
-	    steps {
-	    	powershell '''
-		        docker build -t ${env:FULL_IMAGE_PATH} .
-		    '''
-   	    }
-	}
-	stage('Deploy to Google Kubernetes Engine') {
-	    steps {
-                withCredentials([file(credentialsId: 'gcloud-creds', variable: 'gcloud_creds')]) {
-                    powershell '''
-			            gcloud container clusters get-credentials ${env:GKE_CLUSTER} --zone ${env:GKE_ZONE} --project ${env:PROJECT_ID}
-			            kubectl set image deployment/${env:DEPLOYMENT_NAME} ${env:DEPLOYMENT_NAME}=${env:FULL_IMAGE_PATH} --record
-			            kubectl rollout status deployment/${env:DEPLOYMENT_NAME}
-                    '''
-                }
+        stage('Build Container Image') {
+            steps {
+                powershell '''
+                    docker build -t ${env:FULL_IMAGE_PATH} .
+                '''
             }
-	}
+        }
+        stage('Push to Artifact Registry') {
+            steps {
+                powershell '''
+                    docker build -t ${env:FULL_IMAGE_PATH} .
+                '''
+            }
+        }
+        stage('Deploy to Google Kubernetes Engine') {
+            steps {
+                    withCredentials([file(credentialsId: 'gcloud-creds', variable: 'gcloud_creds')]) {
+                        powershell '''
+                            gcloud container clusters get-credentials ${env:GKE_CLUSTER} --zone ${env:GKE_ZONE} --project ${env:PROJECT_ID}
+                            kubectl set image deployment/${env:DEPLOYMENT_NAME} ${env:DEPLOYMENT_NAME}=${env:FULL_IMAGE_PATH} --record
+                            kubectl rollout status deployment/${env:DEPLOYMENT_NAME}
+                        '''
+                    }
+                }
+        }
+    }
+    post {
+        success {
+            echo "Done. Congratulations! If you ever read this message lol!"
+        }
+        failure {
+            echo "The expected outcome."
+        }
     }
 }
