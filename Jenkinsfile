@@ -4,11 +4,11 @@ pipeline {
         CLOUDSDK_CORE_PROJECT = "spring-petclinic-455216" // Gets called Automatically by Jenkins?
     }
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
-            }
-        }
+        // stage('Checkout') {
+        //     steps {
+        //         git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
+        //     }
+        // }
         stage('Clean') {
             steps {
                 bat './gradlew clean'
