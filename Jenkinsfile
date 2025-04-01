@@ -15,7 +15,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube') {
                     bat '''
-                    docker run --rm -v "%CD%":/app -w /app eclipse-temurin:17-jdk ./gradlew sonarqube \
+                    docker run --rm -v "%CD%":/app -w /app maven:3.8.7 mvn sonar:sonar \
                         -Dsonar.projectKey=spring-petclinic \
                         -Dsonar.host.url=http://192.168.130.132:9000 \
                         -Dsonar.login=sqa_05c9624bf6a7e7680fdae2793fb56b1cd95c4e55 \
