@@ -10,6 +10,8 @@ pipeline {
         GKE_CLUSTER = "petclinic-cluster"
         GKE_ZONE = "europe-west2"
         DEPLOYMENT_NAME = "petclinic-deployment"
+        GRAFANA = "grafana:latest"
+        PROMETHEUS = "prometheus:latest"
     }
     stages {
         stage('Gcloud Authentication') {
@@ -22,14 +24,15 @@ pipeline {
                 }
             }
         }
-        stage('Build Container Image') {
+        stage('Build Grafana and Prometheus') {
             steps {
                 powershell '''
-                    docker build -t ${env:FULL_IMAGE_PATH} .
+                    docker build -t ${env:GRAFANA} -f scripts/grafana/Dockerfile .
+                    docker build -t ${env:PROMETHEUS} -f scripts/prometheus/Dockerfile .
                 '''
             }
         }
-        stage('Push to Artifact Registry') {
+        stage('Build Container Image') {
             steps {
                 powershell '''
                     docker build -t ${env:FULL_IMAGE_PATH} .
