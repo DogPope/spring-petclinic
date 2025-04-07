@@ -41,7 +41,9 @@ pipeline {
                         ${env:PROMETHEUS}
                     docker run -d --name grafana \
                         -p 3000:3000 \
-                        ${env:GRAFANA}
+                        ${env:GRAFANA} \
+                        -v ${PWD}/dashboards/grafana-prometheus.yaml:/etc/grafana/provisioning/dashboards/main.yml \
+                        -v ${PWD}/dashboards:/var/lib/grafana/dashboards
                     Start-Sleep -Seconds 10
                     docker ps --filter "name=grafana" --filter "name=prometheus"
                 '''
