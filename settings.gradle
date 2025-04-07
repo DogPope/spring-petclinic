@@ -1,2 +1,5 @@
 rootProject.name = 'spring-petclinic'
-project.key = 'app'
+sonar.project.key = 'app'
+sonar.projectName = 'spring-petclinic'
+sonar.host.url = 'http://localhost:9000'
+sonar.token = 'sqp_25e474c7be64336c3eb42a18348b9162cf01146d'
