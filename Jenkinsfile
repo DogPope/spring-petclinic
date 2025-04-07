@@ -14,28 +14,19 @@ pipeline {
         PROMETHEUS = "prometheus:latest"
         SONAR_QUBE_HOME = tool 'SonarQube'
     }
-    /*
-    ./gradlew sonar \
-        -Dsonar.projectKey=app \
-        -Dsonar.projectName='app' \
-        -Dsonar.host.url=http://localhost:9000 \
-        -Dsonar.token=sqp_25e474c7be64336c3eb42a18348b9162cf01146d
-    */
 
     stages {
         stage('Sonar Analysis') {
             steps {
-                //withCredentials(credentialsId('app')){
-                    withSonarQubeEnv('SonarQube') {
-                        powershell '''
-                            ./mvnw sonar \
-                                -Dsonar.projectKey=app \
-                                -Dsonar.projectName='app' \
-                                -Dsonar.host.url=http://localhost:9000 \
-                                -Dsonar.token=sqp_25e474c7be64336c3eb42a18348b9162cf01146d
-                        '''
-                    }
-                //}
+                withSonarQubeEnv('SonarQube') {
+                    powershell '''
+                        ./gradlew sonar \
+                            -Dsonar.projectKey=app \
+                            -Dsonar.projectName='app' \
+                            -Dsonar.host.url=http://localhost:9000 \
+                            -Dsonar.token=sqp_25e474c7be64336c3eb42a18348b9162cf01146d
+                    '''
+                }
             }
         }
         stage('Gcloud Authentication') {
