@@ -37,6 +37,7 @@ pipeline {
                     docker build -t ${env:PROMETHEUS} -f scripts/prometheus/Dockerfile .
                     docker run -d --name prometheus \
                         -p 9090:9090 \
+                        -v ${PWD}/scripts/prometheus.yaml:/etc/prometheus/prometheus.yml \
                         ${env:PROMETHEUS}
                     docker run -d --name grafana \
                         -p 3000:3000 \
