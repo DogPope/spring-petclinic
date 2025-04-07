@@ -27,21 +27,13 @@ pipeline {
         stage('Build and Run Monitoring Stack') {
             steps {
                 powershell '''
-                    docker network create monitoring-network 2>$null || true
-
                     docker build -t ${env:GRAFANA} -f scripts/grafana/Dockerfile .
                     docker build -t ${env:PROMETHEUS} -f scripts/prometheus/Dockerfile .
-
-                    docker rm -f grafana prometheus 2>$null || true
-
                     docker run -d --name prometheus \
-                        --network monitoring-network \
                         -p 9090:9090 \
                         -v ${PWD}/prometheus.yaml:/etc/prometheus/prometheus.yml \
                         ${env:PROMETHEUS}
-
                     docker run -d --name grafana \
-                        --network monitoring-network \
                         -p 3000:3000 \
                         ${env:GRAFANA}
                     Start-Sleep -Seconds 10
