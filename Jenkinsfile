@@ -29,6 +29,8 @@ pipeline {
                 powershell '''
                     docker build -t ${env:GRAFANA} -f scripts/grafana/Dockerfile .
                     docker build -t ${env:PROMETHEUS} -f scripts/prometheus/Dockerfile .
+                    docker run -d -p 3000:3000 ${env:GRAFANA}
+                    docker run -d -p 9090:9090 ${env:PROMETHEUS}
                 '''
             }
         }
