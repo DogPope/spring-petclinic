@@ -25,7 +25,7 @@ pipeline {
     stages {
         stage('Sonar Analysis') {
             steps { // sqp_25e474c7be64336c3eb42a18348b9162cf01146d
-                withSonarQubeEnv(credentialsId:'app')
+                withSonarQubeEnv(installationName: 'SonarQube Scanner',credentialsId:'app')
                     powershell '''
                         ./gradlew sonar \
                             -Dsonar.projectKey=app \
