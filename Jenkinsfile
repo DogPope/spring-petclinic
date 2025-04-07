@@ -20,7 +20,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube') {
                     powershell '''
-                        ./gradlew sonar \
+                        ./gradlew sonarqube \
                             -Dsonar.projectKey=app \
                             -Dsonar.projectName='app' \
                             -Dsonar.host.url=http://localhost:9000 \
