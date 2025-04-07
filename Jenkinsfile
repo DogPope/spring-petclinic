@@ -24,8 +24,8 @@ pipeline {
 
     stages {
         stage('Sonar Analysis') {
-            steps { // sqp_25e474c7be64336c3eb42a18348b9162cf01146d
-                withSonarQubeEnv([string(installationName: 'SonarQube Scanner',credentialsId:'app')])
+            steps {
+                withSonarQubeEnv(installationName: 'SonarQube Scanner', credentialsId: 'app') {
                     powershell '''
                         ./gradlew sonar \
                             -Dsonar.projectKey=app \
@@ -33,8 +33,9 @@ pipeline {
                             -Dsonar.host.url=http://localhost:9000 \
                             -Dsonar.token=sqp_25e474c7be64336c3eb42a18348b9162cf01146d
                     '''
+                }
             }
-        }
+}
         stage('Gcloud Authentication') {
             steps {
                 withCredentials([file(credentialsId: 'gcloud-creds', variable: 'gcloud_creds')]) {
