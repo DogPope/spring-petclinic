@@ -27,6 +27,12 @@ pipeline {
         stage('Build and Run Monitoring Stack') {
             steps {
                 powershell '''
+                    # List and remove existing containers.
+                    docker ps -a 
+                    docker stop prometheus
+                    docker rm prometheus
+                    docker stop grafana
+                    docker rm grafana
                     docker build -t ${env:GRAFANA} -f scripts/grafana/Dockerfile .
                     docker build -t ${env:PROMETHEUS} -f scripts/prometheus/Dockerfile .
                     docker run -d --name prometheus \
