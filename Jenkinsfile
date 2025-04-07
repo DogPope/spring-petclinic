@@ -12,7 +12,7 @@ pipeline {
         DEPLOYMENT_NAME = "petclinic-deployment"
         GRAFANA = "grafana:latest"
         PROMETHEUS = "prometheus:latest"
-        SONAR_QUBE_HOME = tool 'SonarQube Scanner'
+        SONAR_QUBE_HOME = tool 'SonarQube'
     }
     /*
     ./gradlew sonar \
