@@ -12,8 +12,29 @@ pipeline {
         DEPLOYMENT_NAME = "petclinic-deployment"
         GRAFANA = "grafana:latest"
         PROMETHEUS = "prometheus:latest"
+        SONAR_QUBE_HOME = tool 'SonarQube Scanner'
     }
+    /*
+    ./gradlew sonar \
+        -Dsonar.projectKey=app \
+        -Dsonar.projectName='app' \
+        -Dsonar.host.url=http://localhost:9000 \
+        -Dsonar.token=sqp_25e474c7be64336c3eb42a18348b9162cf01146d
+    */
+
     stages {
+        stage('Sonar Analysis') {
+            steps { // sqp_25e474c7be64336c3eb42a18348b9162cf01146d
+                withSonarQubeEnv(credentialsId:'app')
+                    powershell '''
+                        ./gradlew sonar \
+                            -Dsonar.projectKey=app \
+                            -Dsonar.projectName='app' \
+                            -Dsonar.host.url=http://localhost:9000 \
+                            -Dsonar.token=sqp_25e474c7be64336c3eb42a18348b9162cf01146d
+                    '''
+            }
+        }
         stage('Gcloud Authentication') {
             steps {
                 withCredentials([file(credentialsId: 'gcloud-creds', variable: 'gcloud_creds')]) {
