@@ -28,7 +28,7 @@ pipeline {
                 //withCredentials(credentialsId('app')){
                     withSonarQubeEnv('SonarQube') {
                         powershell '''
-                            ./gradlew sonar \
+                            ./mvnw sonar \
                                 -Dsonar.projectKey=app \
                                 -Dsonar.projectName='app' \
                                 -Dsonar.host.url=http://localhost:9000 \
