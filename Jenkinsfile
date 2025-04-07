@@ -19,13 +19,7 @@ pipeline {
         stage('Sonar Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    powershell '''
-                        ./gradlew sonarqube \
-                            -Dsonar.projectKey=app \
-                            -Dsonar.projectName='app' \
-                            -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.token=sqp_25e474c7be64336c3eb42a18348b9162cf01146d
-                    '''
+                    powershell './gradlew sonarqube'
                 }
             }
         }
