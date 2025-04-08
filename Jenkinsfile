@@ -16,6 +16,11 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', credentialsId: 'credential-id', url: 'https://github.com/DogPope/spring-petclinic.git'
+            }
+        }
         stage('Sonar Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
