@@ -19,7 +19,7 @@ pipeline {
         stage('Sonar Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    powershell './gradlew sonarqube'
+                    powershell './gradlew sonar'
                 }
             }
         }
