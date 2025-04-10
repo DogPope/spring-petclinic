@@ -96,7 +96,6 @@ pipeline {
                     [$class: 'RequesterRecipientProvider']
                 ], 
                 subject: 'Test'
-                to: "danieljffs@gmail.com"
         }
         failure {
             echo "The Pipeline failed! Please fix the errors, and try again!"
