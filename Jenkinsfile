@@ -91,7 +91,9 @@ pipeline {
     }
     post {
         success {
-            echo "Done. Congratulations! If you ever read this message lol!"
+            emailext body: "The pipeline completed successfully!",
+                    subject: "Pipeline Success!",
+                    to: "danieljffs@gmail.com"
         }
         failure {
             echo "The expected outcome."
