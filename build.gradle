@@ -15,7 +15,7 @@ sonarqube {
         property "sonar.projectName", "spring-petclinic"
         property "sonar.host.url", "http://localhost:9000"
         property "sonar.token", "sqp_25e474c7be64336c3eb42a18348b9162cf01146d"
-        property "sonar.java.binaries", "$buildDir/classes/java/main"
+        property "sonar.java.binaries", "build/classes/java/main"
     }
 }
 
