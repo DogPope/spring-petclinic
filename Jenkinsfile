@@ -91,11 +91,9 @@ pipeline {
     }
     post {
         success {
-            emailext body: "The pipeline completed successfully!", recipientProviders: [
-                    [$class: 'DevelopersRecipientProvider'],
-                    [$class: 'RequesterRecipientProvider']
-                ], 
+            emailext body: "The pipeline completed successfully!",
                 subject: 'Test'
+                to: 'danieljffs@gmail.com'
         }
         failure {
             echo "The Pipeline failed! Please fix the errors, and try again!"
