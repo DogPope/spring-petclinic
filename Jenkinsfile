@@ -21,6 +21,13 @@ pipeline {
                 git branch: 'main', credentialsId: 'credential-id', url: 'https://github.com/DogPope/spring-petclinic.git'
             }
         }
+        stage('Build') {
+            steps {
+                powershell '''
+                    ./gradlew clean build
+                '''
+            }
+        }
         stage('Sonar Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
