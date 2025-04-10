@@ -91,9 +91,10 @@ pipeline {
     }
     post {
         success {
-            mail to: 'danieljffs@gmail.com',
-                 subject: "SUCCESSFUL: Build",
-                 body: "The pipeline completed successfully!"
+            // mail to: 'danieljffs@gmail.com',
+            //      subject: "SUCCESSFUL: Build",
+            //      body: "The pipeline completed successfully!"
+            echo "The pipeline built successfully!"
         }
         failure {
             echo "The Pipeline failed! Please fix the errors, and try again!"
