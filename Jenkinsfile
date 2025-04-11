@@ -89,7 +89,6 @@ pipeline {
                     <p>Job: ${env.JOB_NAME}</p>
                     <p>Build Number: ${env.BUILD_NUMBER}</p>
                     <p>URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                    <p>Deployment of ${env.JOB_NAME} is complete.</p>
                 """,
                 to: "danieljffs@gmail.com",
                 mimeType: 'text/html'
