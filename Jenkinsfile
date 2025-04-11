@@ -90,11 +90,11 @@ pipeline {
     post {
         success {
             steps {
-                emailext(
-                    body: "The pipeline completed successfully!",
-                    subject: 'Test',
-                    to: 'danieljffs@gmail.com'
-                )
+                // emailext(
+                //     body: "The pipeline completed successfully!",
+                //     subject: 'Test',
+                //     to: 'danieljffs@gmail.com'
+                // )
             echo "Sent Email."
         }
         }
