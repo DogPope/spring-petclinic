@@ -46,12 +46,7 @@ pipeline {
         stage('Build and Run Monitoring Stack') {
             steps {
                 powershell '''
-                    # List and remove existing containers.
                     docker ps -a 
-                    docker stop prometheus
-                    docker rm prometheus
-                    docker stop grafana
-                    docker rm grafana
                     docker build -t ${env:GRAFANA} -f scripts/grafana/Dockerfile .
                     docker build -t ${env:PROMETHEUS} -f scripts/prometheus/Dockerfile .
                     docker run -d --name prometheus \
@@ -61,8 +56,6 @@ pipeline {
                     docker run -d --name grafana \
                         -p 3000:3000 \
                         ${env:GRAFANA} \
-                        #-v ${PWD}/dashboards/grafana-prometheus.json:/etc/grafana/provisioning/dashboards/main.yml \
-                        #-v ${PWD}/dashboards:/var/lib/grafana/dashboards
                     Start-Sleep -Seconds 10
                     docker ps --filter "name=grafana" --filter "name=prometheus"
                 '''
