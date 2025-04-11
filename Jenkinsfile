@@ -28,6 +28,11 @@ pipeline {
                 }
             }
         }
+        stage('Gradle Build') {
+            steps {
+                bat './gradlew clean build'
+            }
+        }
         stage('Gcloud Authentication') {
             steps {
                 withCredentials([file(credentialsId: 'gcloud-creds', variable: 'gcloud_creds')]) {
