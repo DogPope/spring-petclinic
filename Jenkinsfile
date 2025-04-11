@@ -88,18 +88,25 @@ pipeline {
         }
     }
     post {
-        success {
-            steps {
-                // emailext(
-                //     body: "The pipeline completed successfully!",
-                //     subject: 'Test',
-                //     to: 'danieljffs@gmail.com'
-                // )
-            echo "Sent Email."
+        always {
+            emailext (
+                subject: "Jenkins Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                    <p>Build Status: ${currentBuild.currentResult}</p>
+                    <p>Job: ${env.JOB_NAME}</p>
+                    <p>Build Number: ${env.BUILD_NUMBER}</p>
+                    <p>URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                    <p>Deployment of ${env.JOB_NAME} is complete.</p>
+                """,
+                to: "danieljffs@gmail.com",
+                mimeType: 'text/html'
+            )
         }
+        success {
+            echo " Build successful!"
         }
         failure {
-            echo "The expected outcome."
+            echo "Build failed!"
         }
     }
 }
