@@ -21,17 +21,10 @@ pipeline {
                 git branch: 'main', credentialsId: 'credential-id', url: 'https://github.com/DogPope/spring-petclinic.git'
             }
         }
-        // stage('Build') {
-        //     steps {
-        //         powershell '''
-        //             ./gradlew clean build
-        //         '''
-        //     }
-        // }
         stage('Sonar Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    powershell './gradlew sonar'
+                    powershell './gradlew sonarqube'
                 }
             }
         }
@@ -91,13 +84,10 @@ pipeline {
     }
     post {
         success {
-            // mail to: 'danieljffs@gmail.com',
-            //      subject: "SUCCESSFUL: Build",
-            //      body: "The pipeline completed successfully!"
-            echo "The pipeline built successfully!"
+            echo "Done. Congratulations! If you ever read this message lol!"
         }
         failure {
-            echo "The Pipeline failed! Please fix the errors, and try again!"
+            echo "The expected outcome."
         }
     }
 }
