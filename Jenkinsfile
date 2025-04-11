@@ -21,16 +21,16 @@ pipeline {
                 git branch: 'main', credentialsId: 'credential-id', url: 'https://github.com/DogPope/spring-petclinic.git'
             }
         }
+        stage('Gradle Build') {
+            steps {
+                bat './gradlew clean build'
+            }
+        }
         stage('Sonar Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
                     bat './gradlew sonar'
                 }
-            }
-        }
-        stage('Gradle Build') {
-            steps {
-                bat './gradlew clean build'
             }
         }
         stage('Gcloud Authentication') {
@@ -88,8 +88,11 @@ pipeline {
         }
     }
     post {
-        success {
-            echo "Done. Congratulations! If you ever read this message lol!"
+        success { 
+            emailext body: "The pipeline completed successfully!",
+                subject: 'Test' 
+                to: 'danieljffs@gmail.com'
+                echo "Sent Email."
         }
         failure {
             echo "The expected outcome."
